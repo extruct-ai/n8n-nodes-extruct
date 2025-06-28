@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-extruct",
   "version": "0.1.0",
-  "description": "Extruct API Node for n8n",
+  "description": "Extruct AI API Node for n8n",
   "keywords": [
     "n8n-community-node-package"
   ],
