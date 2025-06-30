@@ -58,7 +58,7 @@ export class Extruct implements INodeType {
 			try {
 				const tableId = this.getNodeParameter('tableId', i) as string;
 				const companyInput = this.getNodeParameter('companyInput', i) as string;
-				const maxWaitTime = 300; // 5 minutes hardcoded timeout for enrichment
+				const maxWaitTime = 900; // 15 minutes hardcoded timeout for enrichment
 
 				// Step 1: Add company to table and start enrichment process
 				const addOptions = {
@@ -89,7 +89,7 @@ export class Extruct implements INodeType {
 
 				while (isRunning && (Date.now() - startTime) < maxWaitTime * 1000) {
 					await new Promise(resolve => {
-						const end = Date.now() + 10000;
+						const end = Date.now() + 5000;
 						while (Date.now() < end) {}
 						resolve(undefined);
 					});
