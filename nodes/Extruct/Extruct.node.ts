@@ -8,14 +8,14 @@ import { NodeConnectionType, NodeApiError } from 'n8n-workflow';
 
 export class Extruct implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Extruct',
+		displayName: 'Extruct AI',
 		name: 'extruct',
 		icon: 'fa:building',
 		group: ['transform'],
 		version: 1,
 		description: 'Add companies to Extruct tables and run enrichment',
 		defaults: {
-			name: 'Extruct',
+			name: 'Extruct AI',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -81,7 +81,12 @@ export class Extruct implements INodeType {
 					json: true,
 				};
 
-				await this.helpers.request(addOptions);
+				const addResponse = await this.helpers.request(addOptions);
+				// Get row_id from response
+				const rowId = addResponse?.[0]?.id;
+				if (!rowId) {
+					throw new Error('Failed to get row_id from Extruct API response');
+				}
 
 				// Step 2: Poll for enrichment completion
 				const startTime = Date.now();
@@ -114,18 +119,18 @@ export class Extruct implements INodeType {
 					throw new Error(`Enrichment did not complete within ${maxWaitTime} seconds. Please check your table status manually.`);
 				}
 
-				const dataOptions = {
+				// Step 3: Get data by row_id
+				const rowOptions = {
 					method: 'GET' as const,
-					url: `https://api.extruct.ai/v1/tables/${tableId}/data`,
+					url: `https://api.extruct.ai/v1/tables/${tableId}/rows/${rowId}`,
 					headers: {
 						Authorization: `Bearer ${apiToken}`,
 						'Content-Type': 'application/json',
 					},
 					json: true,
 				};
-
-				const responseData = await this.helpers.request(dataOptions);
-				returnData.push({ json: responseData });
+				const rowResponse = await this.helpers.request(rowOptions);
+				returnData.push({ json: rowResponse });
 			} catch (error) {
 				if (this.continueOnFail()) {
 					// If continueOnFail is enabled, add error to output and continue processing other items
