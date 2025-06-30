@@ -10,7 +10,7 @@ export class Extruct implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Extruct AI',
 		name: 'extruct',
-		icon: 'fa:building',
+		icon: 'file:Extruct-icon.svg',
 		group: ['transform'],
 		version: 1,
 		description: 'Add companies to Extruct tables and run enrichment',
