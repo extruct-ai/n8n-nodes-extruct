@@ -1,82 +1,91 @@
+# n8n-nodes-extruct
+
+![Extruct AI Banner](icons/banner.png)
+
+**n8n community node for Extruct AI**
+
+This node lets you enrich and fetch company data from Extruct AI, right inside your n8n workflows.
+Define your own table structure, add any custom columns, and get exactly the data you need.
+
+
+
+## What is Extruct AI?
+
+**Extruct AI** is a data enrichment platform that lets you create custom tables with any columns you want, and then enrich them with company data from the web and public sources.  
+
+- **Any info you want:** Define your own columns — get emails, social links, funding, tech stack, or anything else.
+- **No limits:** Works for any company, in any country, any industry.
+- **Built for automation:** Integrate with CRMs, lead gen, analytics, and more.
+
+
+
+## Features
+
+- Add a company to your Extruct table and trigger enrichment
+- Poll for enrichment completion automatically
+- Instantly fetch the enriched row with all your custom columns
+- Use in any n8n workflow
+
+
+
 ## Installation
 
-### Prerequisites
+Follow the [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/) for installing custom nodes.
 
-- **Node.js 20+** - [Download here](https://nodejs.org/)
-- **n8n** - to install globally: `npm install -g n8n`
 
-### Setup
 
-1. **Clone and install:**
-   ```bash
-   cd n8n-nodes-extruct
-   npm install
-   ```
+## Usage
 
-2. **Build the project:**
-   ```bash
-   npm run build
-   ```
+1. **Create an Extruct table:**
+   - You can start from a template table or create your own from scratch at [Extruct AI](https://extruct.ai).
+   - Add any custom columns you need — you have full control over the table structure and fields.
+2. **Get your Table ID:**
+   - After creating the table, copy its Table ID from the Extruct dashboard, or simply grab it from the table page URL.
+3. **Use in n8n:**
+   - In the Extruct node, paste your Table ID.
+   - Enter the company name or website you want to enrich:
+     - You can type it manually in the node field,
+     - Or pass it dynamically from a Form Trigger,
+     - Or from any other node in your workflow — just connect it to the Extruct node.
+   - Run the workflow — the node will add the company, trigger enrichment, and return the enriched data for your custom columns.
 
-3. **Start n8n with custom extensions:**
-   ```bash
-   export N8N_CUSTOM_EXTENSIONS="/path/to/n8n-nodes-extruct"
-   n8n
-   ```
 
-4. **Access n8n:**
-   - Open http://localhost:5678
-   - Create a new workflow
-   - Search for "Extruct" in the nodes panel
 
 ## Operations
 
 ### Enrich Company Info
-Adds a company to your Extruct table, runs enrichment, and returns the complete table data.
 
-**Parameters:**
-- **Table ID** (required): Your Extruct table identifier
-- **Company Input** (required): Company website or name
+- **Input:**  
+  - Table ID (your Extruct table)
+  - Company Input (website or name)
+- **Output:**  
+  - Returns a fully enriched row with all your custom columns as clean JSON, ready to use in your n8n workflow.
 
-**Output:** Complete table data including the newly enriched company
+**How it works:**  
+1. Adds a company to your Extruct table  
+2. Triggers enrichment  
+3. Waits for completion  
+4. Returns the enriched row (with all your custom fields)
 
-### Get Table Data
-Retrieves current data from an Extruct table without adding new entries.
 
-**Parameters:**
-- **Table ID** (required): Your Extruct table identifier
-
-**Output:** Current table data
 
 ## Credentials
 
-### Extruct API
+- **Extruct API Token**  
+  - Sign up at [extruct.ai](https://extruct.ai)
+  - Get your API token from the dashboard
+  - Add it as a credential in n8n
 
-1. **Get your API token:**
-   - Sign up at [Extruct](https://extruct.ai)
-   - Navigate to the API page
-   - Copy your Bearer token
 
-2. **Configure in n8n:**
-   - In the Extruct node, click "Create New Credential"
-   - Select "Extruct API"
-   - Enter your token
-   - Test and save
 
-## Development
+## Resources
 
-### Project Structure
-```
-n8n-nodes-extruct/
-├── credentials/          # API credentials
-├── nodes/               # Node implementations
-├── dist/                # Compiled files
-└── package.json         # Configuration
-```
+- [Extruct AI website](https://extruct.ai)
+- [n8n Community Nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
+- [Extruct AI API Docs](https://www.extruct.ai/docs/extruct-ai/product)
 
-### Adding Operations
 
-1. Add operation to `properties` array
-2. Implement logic in `execute` method
-3. Rebuild and restart n8n
 
+## Compatibility
+
+- **n8n:** Tested with n8n v1.100.0
