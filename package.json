@@ -6,14 +6,14 @@
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://www.extruct.ai/",
   "author": {
     "name": "Roman",
     "email": "roman@extruct.ai"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zodackwand/n8n-nodes-extruct/tree/master"
+    "url": "https://github.com/extruct-ai/n8n-nodes-extruct"
   },
   "engines": {
     "node": ">=20.15"

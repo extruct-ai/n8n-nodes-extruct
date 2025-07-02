@@ -69,6 +69,27 @@ Follow the [n8n community nodes documentation](https://docs.n8n.io/integrations/
 
 
 
+## Output
+The node returns clean JSON with all enriched fields for the company, matching your custom table columns.
+
+
+
+## Extruct Table Templates
+Use these ready-to-go table templates for your n8n workflows:
+
+- [Sales and Business Development](https://app.extruct.ai/tables/shared/jlcBdFwKXrC8uw21)  
+  *Track leads, enrich company profiles, and automate sales research.*
+
+- [Complete Startup Overview](https://app.extruct.ai/tables/shared/gQlqQK4pQgPDmk81)  
+  *Get a 360° view of startups with funding, team, and product data.*
+
+- [Social Enrichment](https://app.extruct.ai/tables/shared/VfGemEC1BujAIJx8)  
+  *Enrich companies with social profiles, Twitter, LinkedIn, and more.*
+
+Open a template, get the Table ID, and use it in your node.
+
+
+
 ## Credentials
 
 - **Extruct API Token**  
