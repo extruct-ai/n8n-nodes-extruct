@@ -7,6 +7,33 @@
 This node lets you enrich and fetch company data from Extruct AI, right inside your n8n workflows.
 Define your own table structure, add any custom columns, and get exactly the data you need.
 
+### Instant preview
+
+> Here’s what the JSON output would look like if your custom columns were **Company Headcount**, **Patents Filed Last Year**, and **CFO LinkedIn Profile**:
+
+
+```json
+#Input
+{ "Company": "Apple" }
+
+#Output
+{
+  "company_name": {
+    "value": { "answer": "Apple" }
+  },
+  "company_headcount": {
+    "value": { "answer": "164000" }
+  },
+  "patents_filed_last_year": {
+    "value": { "answer": "3082" }
+  },
+  "cfo_linkedin_profile": {
+    "value": { "answer": "https://www.linkedin.com/in/kevan-parekh-231377" }
+  }
+}
+```
+> *Note: This is a truncated JSON output – the full response for each column also includes `sources` and `explanation` fields you can use.*
+
 
 
 ## What is Extruct AI?
@@ -49,6 +76,9 @@ Follow the [n8n community nodes documentation](https://docs.n8n.io/integrations/
      - Or from any other node in your workflow — just connect it to the Extruct node.
    - Run the workflow — the node will add the company, trigger enrichment, and return the enriched data for your custom columns.
 
+## Quick Demo
+
+![n8n node demo](https://github.com/zodackwand/extruct_screenshots/blob/main/demo.gif?raw=true)
 
 
 ## Operations
