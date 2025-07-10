@@ -85,7 +85,9 @@ export class Extruct implements INodeType {
 				// Get row_id from response
 				const rowId = addResponse?.[0]?.id;
 				if (!rowId) {
-					throw new Error('Failed to get row_id from Extruct API response');
+					throw new NodeApiError(this.getNode(), {
+						message: 'Failed to get row_id from Extruct API response',
+					});
 				}
 
 				// Step 2: Poll for enrichment completion
@@ -116,7 +118,9 @@ export class Extruct implements INodeType {
 				}
 
 				if (isRunning) {
-					throw new Error(`Enrichment did not complete within ${maxWaitTime} seconds. Please check your table status manually.`);
+					throw new NodeApiError(this.getNode(), {
+						message: `Enrichment did not complete within ${maxWaitTime} seconds. Please check your table status manually.`,
+					});
 				}
 
 				// Step 3: Get data by row_id
