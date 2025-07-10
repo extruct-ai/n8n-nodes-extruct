@@ -9,30 +9,83 @@ Define your own table structure, add any custom columns, and get exactly the dat
 
 ### Instant preview
 
-> Here’s what the JSON output would look like if your custom columns were **Company Headcount**, **Patents Filed Last Year**, and **CFO LinkedIn Profile**:
+Suppose you want to enrich a company by website and get its funding, team size, recent news headline, patent count, and head of HR LinkedIn profile.
 
 
 ```json
 #Input
-{ "Company": "Apple" }
+{ "Company": "stripe.com" }
 
 #Output
 {
   "company_name": {
-    "value": { "answer": "Apple" }
+    "value": {
+      "answer": "Stripe",
+      "source": [
+        "https://en.wikipedia.org/wiki/Stripe,_Inc."
+      ],
+      "explanation": "Full company name as listed on the Stripe Wikipedia page."
+    }
   },
-  "company_headcount": {
-    "value": { "answer": "164000" }
+  "company_website": {
+    "value": {
+      "answer": "https://stripe.com/",
+      "source": [
+        "https://en.wikipedia.org/wiki/Stripe,_Inc.",
+        "https://stripe.com"
+      ],
+      "explanation": "Canonical homepage confirmed on Wikipedia and the stripe.com domain."
+    }
   },
-  "patents_filed_last_year": {
-    "value": { "answer": "3082" }
+  "recent_news_headline": {
+    "value": {
+      "answer": "Stripe’s first employee, the founder of fintech Increase, sort of bought a bank",
+      "source": [
+        "https://techcrunch.com/2025/07/03/stripes-first-employee-the-founder-of-fintech-increase-sort-of-bought-a-bank"
+      ],
+      "explanation": "Headline from a TechCrunch article published July 3, 2025, as the latest news about Stripe."
+    }
   },
-  "cfo_linkedin_profile": {
-    "value": { "answer": "https://www.linkedin.com/in/kevan-parekh-231377" }
+  "team_size": {
+    "value": {
+      "answer": "8550",
+      "source": [
+        "https://techcrunch.com/2025/01/21/stripe-is-laying-off-300-people-but-says-it-still-plans-to-hire-in-2025"
+      ],
+      "explanation": "About 8,550 employees after a January 2025 layoff of 300 people, per TechCrunch."
+    }
+  },
+  "patent_count": {
+    "value": {
+      "answer": "247",
+      "source": [
+        "https://insights.greyb.com/stripe-patents"
+      ],
+      "explanation": "Total of 247 patents held globally by Stripe, according to GreyB Insights."
+    }
+  },
+  "funding_amount": {
+    "value": {
+      "answer": "$9.81B",
+      "source": [
+        "https://tracxn.com/d/companies/stripe/__uahG_IGnVgsUsOG-f8otYHLkOkliWg7YFhJ5ZkNIkpI/funding-and-investors",
+        "https://www.crunchbase.com/organization/stripe/company_financials"
+      ],
+      "explanation": "Raised $9.81 B over 24 rounds, including a $6.87 B round in March 2023, per Tracxn and Crunchbase."
+    }
+  },
+  "head_of_hr_linkedin": {
+    "value": {
+      "answer": "https://www.linkedin.com/in/maiaj",
+      "source": [
+        "https://www.comparably.com/companies/stripe/maia-josebachvili",
+        "https://www.linkedin.com/in/maiaj"
+      ],
+      "explanation": "Confirmed as Head of People at Stripe via Comparably and LinkedIn."
+    }
   }
 }
 ```
-> *Note: This is a truncated JSON output – the full response for each column also includes `sources` and `explanation` fields you can use.*
 
 
 
