@@ -13,10 +13,10 @@ Suppose you want to enrich a company by website and get its funding, team size, 
 
 
 ```json
-#Input
+//Input
 { "Company": "stripe.com" }
 
-#Output
+//Output
 {
   "company_name": {
     "value": {
