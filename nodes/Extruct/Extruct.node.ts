@@ -4,7 +4,7 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
-import { NodeConnectionType, NodeApiError } from 'n8n-workflow';
+import { NodeConnectionType, NodeApiError, sleep } from 'n8n-workflow';
 
 export class Extruct implements INodeType {
 	description: INodeTypeDescription = {
@@ -50,9 +50,6 @@ export class Extruct implements INodeType {
 		const items = this.getInputData();
 		const returnData: INodeExecutionData[] = [];
 
-		// Get API credentials for authentication
-		const credentials = await this.getCredentials('extructApi');
-		const apiToken = credentials.apiToken as string;
 
 		for (let i = 0; i < items.length; i++) {
 			try {
@@ -64,10 +61,6 @@ export class Extruct implements INodeType {
 				const addOptions = {
 					method: 'POST' as const,
 					url: `https://api.extruct.ai/v1/tables/${tableId}/rows`,
-					headers: {
-						Authorization: `Bearer ${apiToken}`,
-						'Content-Type': 'application/json',
-					},
 					body: {
 						rows: [
 							{
@@ -81,7 +74,7 @@ export class Extruct implements INodeType {
 					json: true,
 				};
 
-				const addResponse = await this.helpers.request(addOptions);
+				const addResponse = await this.helpers.httpRequestWithAuthentication.call(this, 'extructApi', addOptions);
 				// Get row_id from response
 				const rowId = addResponse?.[0]?.id;
 				if (!rowId) {
@@ -95,23 +88,15 @@ export class Extruct implements INodeType {
 				let isRunning = true;
 
 				while (isRunning && (Date.now() - startTime) < maxWaitTime * 1000) {
-					await new Promise(resolve => {
-						const end = Date.now() + 5000;
-						while (Date.now() < end) {}
-						resolve(undefined);
-					});
+					await sleep(5000);
 
 					const statusOptions = {
 						method: 'GET' as const,
 						url: `https://api.extruct.ai/v1/tables/${tableId}`,
-						headers: {
-						Authorization: `Bearer ${apiToken}`,
-						'Content-Type': 'application/json',
-					},
-					json: true,
-				};
+						json: true,
+					};
 
-					const statusResponse = await this.helpers.request(statusOptions);
+					const statusResponse = await this.helpers.httpRequestWithAuthentication.call(this, 'extructApi', statusOptions);
 					if (statusResponse.status?.run_status !== 'running') {
 						isRunning = false;
 					}
@@ -127,18 +112,14 @@ export class Extruct implements INodeType {
 				const rowOptions = {
 					method: 'GET' as const,
 					url: `https://api.extruct.ai/v1/tables/${tableId}/rows/${rowId}`,
-					headers: {
-						Authorization: `Bearer ${apiToken}`,
-						'Content-Type': 'application/json',
-					},
 					json: true,
 				};
-				const rowResponse = await this.helpers.request(rowOptions);
-				returnData.push({ json: rowResponse });
+				const rowResponse = await this.helpers.httpRequestWithAuthentication.call(this, 'extructApi', rowOptions);
+				returnData.push({ json: rowResponse, pairedItem: { item: i } });
 			} catch (error) {
 				if (this.continueOnFail()) {
 					// If continueOnFail is enabled, add error to output and continue processing other items
-					returnData.push({ json: { error: error.message }, pairedItem: i });
+					returnData.push({ json: { error: error.message }, pairedItem: { item: i } });
 				} else {
 					// Otherwise, throw the error to stop execution
 					throw new NodeApiError(this.getNode(), error);
